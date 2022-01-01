@@ -1,0 +1,86 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "PowerShell",
+            "args": [
+                "./scripts/clean.ps1"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake Configure",
+            "type": "shell",
+            "command": "PowerShell",
+            "args": [
+                "./scripts/cmake_configure.ps1"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Debug",
+            "type": "shell", 
+            "command": "PowerShell",
+            "args": [
+                "./scripts/build_debug.ps1"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build"]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "time",
+            "args": [
+                "./scripts/run.sh"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": "Build Debug"
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": "time",
+            "args": [
+                "./scripts/test.sh"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": "Build Debug"
+        },
+        {
+            "label": "vcpkg install",
+            "type": "shell",
+            "command": "PowerShell",
+            "args": [
+                "./scripts/vcpkg_install.ps1"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
