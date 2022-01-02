@@ -63,6 +63,11 @@
         "iomanip": "cpp",
         "sstream": "cpp",
         "cstring": "cpp",
-        "source_location": "cpp"
+        "source_location": "cpp",
+        "charconv": "cpp",
+        "bitset": "cpp",
+        "regex": "cpp",
+        "future": "cpp",
+        "variant": "cpp"
     }
 }

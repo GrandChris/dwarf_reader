@@ -47,6 +47,24 @@ namespace pei
         }
 
         /// 
+        /// @brief Returns the section with the given name
+        /// @param index the index in the section table
+        ///
+        [[nodiscard]] constexpr auto
+        find_section(std::string_view const name) const noexcept -> SectionHeader 
+        {   
+            for(size_t i = 0; i < number_of_sections(); ++i) {
+                auto const section = get_section(i);
+
+                if(section.name() == name) {
+                    return section;
+                }
+            }
+
+            return SectionHeader(data_, 0);
+        }
+
+        /// 
         /// @brief Returns the number of sections
         ///
         [[nodiscard]] constexpr auto

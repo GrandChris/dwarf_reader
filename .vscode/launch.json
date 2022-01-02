@@ -8,7 +8,7 @@
         "name": "gdb-dwarf_reader",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/build/tests/pei/Debug/tests_pei_behaviour.exe",
+        "program": "${workspaceFolder}/build/tests/dwarf/Debug/tests_dwarf_behaviour.exe",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",

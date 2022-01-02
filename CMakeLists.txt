@@ -42,6 +42,22 @@ file(GLOB SOURCE_FILES CONFIGURE_DEPENDS
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCE_FILES})
 
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    magic_enum
+)
+
 
 enable_testing()
 add_subdirectory(tests)
+
+
+include(FetchContent)
+
+FetchContent_Declare(
+  magic_enum
+  GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+  GIT_TAG        v0.7.3
+)
+
+# CMake 3.14+
+FetchContent_MakeAvailable(magic_enum)
