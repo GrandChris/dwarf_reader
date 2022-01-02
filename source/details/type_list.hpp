@@ -26,7 +26,7 @@ namespace details
         static constexpr size_t end = begin + size;  
 
         [[nodiscard]] static constexpr auto
-        bit_cast(std::span<char const> const data, size_t const index) const noexcept -> Type
+        bit_cast(std::span<char const> const data, size_t const index) noexcept -> Type
         {
             auto const full_index = index + begin;
             auto const res = details::bit_cast<Type>(data, full_index);

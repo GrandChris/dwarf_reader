@@ -6,9 +6,11 @@
 ///
 
 #include "pei/pei.hpp"
-#include "FileToHeader_exe.h"
+#include "tests_example_program_example_program_exe.h"
 #include "ut/ut.hpp"
-#include "dwarf/unit_header/unit_header.hpp"
+#include "dwarf/debug_info/unit_header/unit_header.hpp"
+#include "dwarf/debug_info/unit_header/full_and_partial_compilation_unit_header.hpp"
+#include "dwarf/debug_info/debug_info.hpp"
 
 #include <iostream>
 
@@ -17,10 +19,11 @@ tests() noexcept -> bool
 {
     ut::Scenario("normal_case") = []() noexcept
     {
-        constexpr std::span<char const> data(FileToHeader_exe);
+        constexpr std::span<char const> data(tests_example_program_example_program_exe);
         constexpr pei::SectionTable section_table(data);
         constexpr pei::SectionHeader section_header = section_table.find_section(".debug_info");
         constexpr std::span<char const> debug_info = data.subspan(section_header.pointer_to_raw_data(), section_header.size_of_raw_data());
+        // std::cout << "debug_info.size: "  << debug_info.size() << std::endl;
 
         // std::cout << section_table.number_of_sections() << std::endl;
         // for(size_t i = 0; i < section_table.number_of_sections() ; ++i) {
@@ -32,19 +35,49 @@ tests() noexcept -> bool
         ut::Given() = [&]() noexcept{
             constexpr dwarf::UnitHeader unit_header(debug_info);
 
-            std::cout << unit_header << std::endl;
+            
 
             ut::Then() = [&]() noexcept {
                 ut::check(unit_header.unit_type() == dwarf::UnitHeaderUnitType::dw_ut_compile);
             };
 
             ut::Then() = [&]() noexcept {
-                if(unit_header.unit_type() == dwarf::UnitHeaderUnitType::dw_ut_compile) {
-                    constexpr dwarf::FullAndPartialCompilationUnitHeader specialized_unit_header = unit_header.specialize<dwarf::UnitHeaderUnitType::dw_ut_compile>();
+                if(unit_header.is(dwarf::UnitHeaderUnitType::dw_ut_compile)) {
+                    constexpr dwarf::SpecializedUnitHeader<dwarf::UnitHeaderUnitType::dw_ut_compile> specialized_unit_header(unit_header);
+                    ut::check(specialized_unit_header.address_size() == 8);
                     
-                    std::cout << specialized_unit_header << std::endl;
+                    // std::cout << unit_header << std::endl;
+
+       
+
+                    // std::cout << specialized_unit_header << std::endl;
 
                 }
+                // ut::check(unit_header.unit_type() == dwarf::UnitHeaderUnitType::dw_ut_compile);
+            };
+        };
+
+        ut::Given() = [&]() noexcept{
+            constexpr dwarf::DebugInfo debug_info_section(debug_info);
+
+            ut::Then() = [&]() noexcept {
+                for(dwarf::UnitHeader const unit_header : debug_info_section)
+                {
+                    // std::cout << "address: " << unit_header.base_index() << " (0x" << std::hex << unit_header.base_index() << std::dec << ")" << std::endl;
+                    // for(size_t i = 0; i < 16; ++i) {
+                    //     std::cout << std::hex << "0x" << static_cast<uint32_t>(std::bit_cast<uint8_t>(debug_info[unit_header.base_index() + i])) << " " << std::dec << std::endl; 
+                    // }
+
+                    std::cout << unit_header;
+                    if(unit_header.is(dwarf::UnitHeaderUnitType::dw_ut_compile)) {
+                        auto const specialized_unit_header = unit_header.as<dwarf::UnitHeaderUnitType::dw_ut_compile>();
+
+                        std::cout << specialized_unit_header;
+                    }
+
+                    std::cout << std::endl;
+                }
+
                 // ut::check(unit_header.unit_type() == dwarf::UnitHeaderUnitType::dw_ut_compile);
             };
         };
