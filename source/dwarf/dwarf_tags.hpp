@@ -175,7 +175,7 @@ namespace dwarf
         dw_at_base_types = 0x35,
         dw_at_calling_convention = 0x36,
         dw_at_count = 0x37,
-        dw_at_data_member_location = 0x39,
+        dw_at_data_member_location = 0x38,
         dw_at_decl_column = 0x39,
         dw_at_decl_file = 0x3a,
         dw_at_decl_line = 0x3b,

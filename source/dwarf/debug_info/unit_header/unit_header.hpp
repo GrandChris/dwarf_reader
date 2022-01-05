@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "dwarf/debug_info/dwarf_tags.hpp"
+#include "dwarf/dwarf_tags.hpp"
 #include "details/type_list.hpp"
 #include "magic_enum.hpp"
 #include <span>
